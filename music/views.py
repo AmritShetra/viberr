@@ -42,7 +42,7 @@ def favourite_song(request, album_id, song_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-def search_view(request):
+def search_albums(request):
     query = request.GET.get("q")
     album_list = Album.objects.filter(Q(title__contains=query))
     return render(request, 'music/index.html', {
@@ -61,9 +61,22 @@ class SongCreate(CreateView):
         return super(SongCreate, self).form_valid(form)
 
 
+class SongDelete(DeleteView):
+    model = Song
+
+    def get_success_url(self):
+        album = self.object.album
+        return reverse_lazy('music:detail', kwargs={'pk': album.id})
+
+
 class SongView(generic.ListView):
     template_name = 'music/songs.html'
     context_object_name = 'all_songs'
 
     def get_queryset(self):
-        return Song.objects.all()
+        try:
+            query = self.request.GET.get("q")
+            song_list = Song.objects.filter(Q(title__contains=query))
+            return song_list
+        except ValueError:
+            return Song.objects.all()

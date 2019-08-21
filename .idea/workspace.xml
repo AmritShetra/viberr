@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31a8908e-bdd4-4e41-bc71-4a8b6a3183ab" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/music/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/music/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/music/templates/music/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/music/templates/music/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/music/templates/music/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/music/templates/music/songs.html" beforeDir="false" afterPath="$PROJECT_DIR$/music/templates/music/songs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/music/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/music/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/music/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/music/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -68,7 +68,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django tests.Test: music.tests.Test.test">
+  <component name="RunManager" selected="Django server.viberr">
     <configuration name="Test: music.tests.Test.test" type="DjangoTestsConfigurationType" temporary="true">
       <module name="viberr" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -151,7 +151,7 @@
       <workItem from="1566232498292" duration="2560000" />
       <workItem from="1566294358435" duration="12851000" />
       <workItem from="1566313083115" duration="2527000" />
-      <workItem from="1566380602563" duration="4475000" />
+      <workItem from="1566380602563" duration="10398000" />
     </task>
     <servers />
   </component>

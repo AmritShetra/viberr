@@ -23,10 +23,13 @@ urlpatterns = [
     path('<album_id>/<song_id>/favourite/', views.favourite_song, name='favourite-song'),
 
     # /music/search/
-    path('search/results/', views.search_view, name='search'),
+    path('search/results/', views.search_albums, name='album-search'),
 
     # /music/71/add/
     path('<album_id>/add/', views.SongCreate.as_view(), name='song-add'),
+
+    # /music/songs/2/delete/
+    path('songs/<pk>/delete/', views.SongDelete.as_view(), name='song-delete'),
 
     # /music/songs/
     path('songs', views.SongView.as_view(), name='songs'),
