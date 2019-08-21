@@ -31,7 +31,7 @@
                             </button>
                         </td>
                         <td>
-                            {{ song.album }}
+                            <img src="{{ song.album.logo.url }}" alt="album logo" style="height: 30px;"> {{ song.album }}
                         </td>
                         <td>
                             <a href="{% url 'music:favourite-song' song.album.id song.id %}" class="btn">

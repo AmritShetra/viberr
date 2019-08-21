@@ -6,7 +6,7 @@
         <div class="row">
 
         {% if search %}
-            <h4>Search results: {{ query }}</h4><br>
+            <h4>Search results ({{ all_albums.count }}): {{ query }}</h4><br>
         {% endif %}
 
         {% for album in all_albums %}

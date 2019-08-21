@@ -55,6 +55,11 @@ class SongCreate(CreateView):
     model = Song
     fields = ['title', 'file_type']
 
+    def form_valid(self, form):
+        album = Album.objects.get(pk=self.kwargs['album_id'])
+        form.instance.album = album
+        return super(SongCreate, self).form_valid(form)
+
 
 class SongView(generic.ListView):
     template_name = 'music/songs.html'
