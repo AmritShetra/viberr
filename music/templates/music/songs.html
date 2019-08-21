@@ -1,0 +1,50 @@
+{% extends 'music/base.html' %}
+{% block title %}Viberr - Songs{% endblock %}
+{% block songs-active %}active{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Song Name</th>
+                        <th>Artist</th>
+                        <th>Audio File</th>
+                        <th>Album</th>
+                        <th>Favourite</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for song in all_songs %}
+                    <tr>
+                        <td>
+                            {{ song.title }}
+                        </td>
+                        <td>
+                            {{ song.album.artist }}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success">
+                                <span class="glyphicon glyphicon-play"></span> Play
+                            </button>
+                        </td>
+                        <td>
+                            {{ song.album }}
+                        </td>
+                        <td>
+                            <a href="{% url 'music:favourite-song' song.album.id song.id %}" class="btn">
+                                {% if song.is_favourite %}
+                                    <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/star-24.png" alt="favourite">
+                                {% else %}
+                                    <img src="https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/star-24.png" alt="not-favourite">
+                                {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
