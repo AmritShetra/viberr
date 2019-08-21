@@ -76,7 +76,7 @@ class SongView(generic.ListView):
     def get_queryset(self):
         try:
             query = self.request.GET.get("q")
-            song_list = Song.objects.filter(Q(title__contains=query))
+            song_list = Song.objects.filter(Q(title__contains=query)).order_by('-is_favourite')
             return song_list
         except ValueError:
-            return Song.objects.all()
+            return Song.objects.all().order_by('-is_favourite')

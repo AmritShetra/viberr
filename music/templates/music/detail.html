@@ -38,7 +38,7 @@
                             </thead>
 
                             <tbody>
-                                {% for song in album.song_set.all %}
+                                {% for song in album.song_set.all|dictsortreversed:"is_favourite" %}
                                     <tr>
                                         <td>
                                             {{ song.title }}
@@ -71,10 +71,21 @@
                             </tbody>
 
                         </table>
+
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-body">
+                    Other songs by this artist:
+                    <div class="panel-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
