@@ -5,6 +5,8 @@
     <div class="container">
         <div class="row">
 
+            <h3>{{ user.first_name }}'s albums:</h3>
+
         {% if search %}
             <h4>Search results ({{ all_albums.count }}): {{ query }}</h4><br>
         {% endif %}

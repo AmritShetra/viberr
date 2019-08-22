@@ -23,7 +23,7 @@
                     <div class="panel-body">
                         {% for album in all_albums %}
                             <h4>
-                                <img src="{{ album.logo.url }}" style="height: 40px;" alt="Logo">
+                                <img src="{{ album.logo.url }}" style="height: 50px;" alt="Logo">
                                 <a href="{% url 'music:detail' album.id %}"> {{ album.title }} </a>
                             </h4>
                         {% endfor %}
@@ -89,12 +89,7 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-sm-4 col-md-3">
-
-            </div>
         </div>
     </div>
 {% endblock %}

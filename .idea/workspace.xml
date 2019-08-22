@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="31a8908e-bdd4-4e41-bc71-4a8b6a3183ab" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/user.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/viberr.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/viberr.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/songs.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/songs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -150,7 +158,7 @@
       <workItem from="1566467497032" duration="6794000" />
       <workItem from="1566476777592" duration="615000" />
       <workItem from="1566484219695" duration="2667000" />
-      <workItem from="1566486937343" duration="2117000" />
+      <workItem from="1566486937343" duration="9332000" />
     </task>
     <servers />
   </component>

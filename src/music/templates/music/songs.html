@@ -8,7 +8,7 @@
 
             <form method="get" action="{% url 'music:songs' %}">
                 <div class="form-group">
-                    <input name="q" type="text" placeholder="Search for a song..." value="{{ request.GET.q }}">
+                    <input name="s" type="text" placeholder="Search for a song..." value="{{ request.GET.s }}">
                     <button type="submit" class="btn btn-default">Search</button>
                 </div>
             </form>
@@ -44,7 +44,7 @@
                         </td>
                         <td>
                             <a href="{% url 'music:detail' song.album.id %}">
-                                <img src="{{ song.album.logo.url }}" alt="album logo" style="height: 30px;"> {{ song.album }}
+                                <img src="{{ song.album.logo.url }}" alt="album logo" style="height: 40px;"> {{ song.album }}
                             </a>
                         </td>
                         <td>

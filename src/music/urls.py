@@ -36,4 +36,7 @@ urlpatterns = [
 
     # /music/songs/
     path('songs', views.SongView.as_view(), name='songs'),
+
+    # /music/logout/
+    path('logout', views.logout_user, name='logout'),
 ]

@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import generic
@@ -14,7 +14,12 @@ class IndexView(generic.ListView):
     context_object_name = 'all_albums'
 
     def get_queryset(self):
-        return Album.objects.all()
+        return Album.objects.filter(user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data()
+        context['user'] = self.request.user
+        return context
 
 
 class DetailView(generic.DetailView):
@@ -35,6 +40,13 @@ class DetailView(generic.DetailView):
 class AlbumCreate(CreateView):
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
+
+    def form_valid(self, form):
+        """ Overriding form_valid, which does the form saving. Here, we get the "user" who is
+        currently logged in and assign the album to them, before we save the album."""
+        user = self.request.user
+        form.instance.user = user
+        return super(AlbumCreate, self).form_valid(form)
 
 
 class AlbumUpdate(UpdateView):
@@ -87,9 +99,18 @@ class SongView(generic.ListView):
     context_object_name = 'all_songs'
 
     def get_queryset(self):
+        song_ids = []
+        for album in Album.objects.filter(user=self.request.user):
+            for song in album.song_set.all():
+                song_ids.append(song.pk)
+        song_list = Song.objects.filter(pk__in=song_ids)
+
+        # See if the query is empty (if so, just order all songs with favourite songs first
+        # If not, filter the songs according to the query (this does not take into account lower/upper case)
+        # and then order with favourite songs first
         try:
-            query = self.request.GET.get("q")
-            song_list = Song.objects.filter(Q(title__contains=query)).order_by('-is_favourite')
+            query = self.request.GET.get("s")
+            song_list = song_list.filter(Q(title__icontains=query)).order_by('-is_favourite')
             return song_list
         except ValueError:
             return Song.objects.all().order_by('-is_favourite')
@@ -127,3 +148,8 @@ class UserFormView(View):
                     return redirect('music:index')
 
         return render(request, self.template_name, {'form': form})
+
+
+def logout_user(request):
+    #logout(request)
+    pass

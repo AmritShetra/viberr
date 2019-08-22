@@ -10,3 +10,6 @@ A music application made using Django, with a PostgreSQL database, that allows y
 
 ### How to use this repository
 Clone the repo to your device and run "sudo docker-compose up".
+Run "sudo docker exec -it viberr_postgres_1 bash", then "su postgres" and "psql" to access the PostgreSQL database.
+Run "sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py shell" to access the shell.
+
