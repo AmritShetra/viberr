@@ -22,9 +22,10 @@
                     Other albums by this artist:
                     <div class="panel-body">
                         {% for album in all_albums %}
-                            <h5>
+                            <h4>
+                                <img src="{{ album.logo.url }}" style="height: 40px;" alt="Logo">
                                 <a href="{% url 'music:detail' album.id %}"> {{ album.title }} </a>
-                            </h5>
+                            </h4>
                         {% endfor %}
                     </div>
                 </div>

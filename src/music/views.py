@@ -66,7 +66,7 @@ def search_albums(request):
 
 class SongCreate(CreateView):
     model = Song
-    fields = ['title', 'file_type']
+    fields = ['title', 'audio_file']
 
     def form_valid(self, form):
         album = Album.objects.get(pk=self.kwargs['album_id'])
