@@ -1,0 +1,99 @@
+{% extends 'music/base.html' %}
+{% block title %}Viberr - {{ album.title }}{% endblock %}
+{% block albums-active %}active{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Album info (left) -->
+            <div class="col-sm-4 col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <img src="{{ album.logo.url }}" style="width: 250px;" class="img-responsive" alt="Logo">
+
+                        <h2>{{ album.title }} <small>({{ album.genre }})</small></h2>
+                        <h3>{{ album.artist }}</h3>
+                    </div>
+                </div>
+
+                <!-- Other albums info (below previous panel)-->
+                <div class="panel panel-body">
+                    Other albums by this artist:
+                    <div class="panel-body">
+                        {% for album in all_albums %}
+                            <h5>
+                                <a href="{% url 'music:detail' album.id %}"> {{ album.title }} </a>
+                            </h5>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Song info (right) -->
+            <div class="col-sm-8 col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3>Songs</h3>
+                        <a class="btn btn-default" href="{% url 'music:song-add' album_id=album.id %}" role="button">
+                            Add Song
+                        </a>
+
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Audio File</th>
+                                    <th>Favourite</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for song in album.song_set.all|dictsortreversed:"is_favourite" %}
+                                    <tr>
+                                        <td>
+                                            {{ song.title }}
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-success">
+                                                <span class="glyphicon glyphicon-play"></span> Play
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'music:favourite-song' album.id song.id %}" class="btn">
+                                                {% if song.is_favourite %}
+                                                    <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/star-24.png" alt="favourite">
+                                                {% else %}
+                                                    <img src="https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/star-24.png" alt="not-favourite">
+                                                {% endif %}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <form action="{% url 'music:song-delete' song.id %}" method="post" style="display: inline;">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="song_id" value="{{ song.id }}" />
+                                                <button type="submit" class="btn btn-danger">
+                                                    <span class="glyphicon glyphicon-remove"></span> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-md-3">
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

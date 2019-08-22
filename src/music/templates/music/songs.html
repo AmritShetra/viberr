@@ -1,0 +1,65 @@
+{% extends 'music/base.html' %}
+{% block title %}Viberr - Songs{% endblock %}
+{% block songs-active %}active{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+            <form method="get" action="{% url 'music:songs' %}">
+                <div class="form-group">
+                    <input name="q" type="text" placeholder="Search for a song..." value="{{ request.GET.q }}">
+                    <button type="submit" class="btn btn-default">Search</button>
+                </div>
+            </form>
+
+            {% if search %}
+                <h4>Search results ({{ all_songs.count }}): {{ query }}</h4><br>
+            {% endif %}
+
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Song Name</th>
+                        <th>Artist</th>
+                        <th>Audio File</th>
+                        <th>Album</th>
+                        <th>Favourite</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for song in all_songs %}
+                    <tr>
+                        <td>
+                            {{ song.title }}
+                        </td>
+                        <td>
+                            {{ song.album.artist }}
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success">
+                                <span class="glyphicon glyphicon-play"></span> Play
+                            </button>
+                        </td>
+                        <td>
+                            <a href="{% url 'music:detail' song.album.id %}">
+                                <img src="{{ song.album.logo.url }}" alt="album logo" style="height: 30px;"> {{ song.album }}
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{% url 'music:favourite-song' song.album.id song.id %}" class="btn">
+                                {% if song.is_favourite %}
+                                    <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/star-24.png" alt="favourite">
+                                {% else %}
+                                    <img src="https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/star-24.png" alt="not-favourite">
+                                {% endif %}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

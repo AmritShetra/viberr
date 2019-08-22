@@ -1,0 +1,44 @@
+{% extends 'music/base.html' %}
+{% block albums-active %}active{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+
+        {% if search %}
+            <h4>Search results ({{ all_albums.count }}): {{ query }}</h4><br>
+        {% endif %}
+
+        {% for album in all_albums %}
+            <div class="col-sm-4 col-lg-3">
+                <div class="thumbnail">
+                    <a href="{% url 'music:detail' album.id %}">
+                        <img src="{{ album.logo.url }}" class="img-responsive" alt="album logo">
+                    </a>
+                    <div class="caption">
+                        <h2>{{ album.title }}</h2>
+                        <h5>{{ album.artist }}</h5>
+                    </div>
+
+                    <a href="{% url 'music:detail' album.id %}" class="btn btn-primary btn-sm" role="button">
+                        View Details
+                    </a>
+
+                    <form action="{% url 'music:album-delete' album.id %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <input type="hidden" name="album_id" value="{{  album.id }}" />
+                        <button type="submit" class="btn btn-default btn-sm">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </form>
+
+                    <a href="" class="btn btn-sm" role="button">
+                        <span class="glyphicon glyphicon-star"></span>
+                    </a>
+
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}
