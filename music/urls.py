@@ -7,6 +7,9 @@ urlpatterns = [
     # /music/
     path('', views.IndexView.as_view(), name='index'),
 
+    # /music/register/
+    path('register/', views.UserFormView.as_view(), name='register'),
+
     # /music/71/
     path('<pk>/', views.DetailView.as_view(), name='detail'),
 

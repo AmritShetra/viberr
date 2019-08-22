@@ -16,7 +16,22 @@
                         <h3>{{ album.artist }}</h3>
                     </div>
                 </div>
+
+                <!-- Other albums info (below previous panel)-->
+                <div class="panel panel-body">
+                    Other albums by this artist:
+                    <div class="panel-body">
+                        {% for album in all_albums %}
+                            <ul>
+                                <li>
+                                    <a href="{% url 'music/detail' album.id %}">{{ album.title }}</a>
+                                </li>
+                            </ul>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
+
 
             <!-- Song info (right) -->
             <div class="col-sm-8 col-md-9">
@@ -79,12 +94,7 @@
 
         <div class="row">
             <div class="col-sm-4 col-md-3">
-                <div class="panel panel-body">
-                    Other songs by this artist:
-                    <div class="panel-body">
 
-                    </div>
-                </div>
             </div>
         </div>
     </div>
