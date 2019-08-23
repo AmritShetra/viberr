@@ -1,24 +1,35 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import generic
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .forms import UserForm
+from .forms import UserForm, LogInForm
 from .models import Album, Song
 
 
-class IndexView(generic.ListView):
+class IndexView(LoginRequiredMixin, generic.ListView):
     template_name = 'music/index.html'
     context_object_name = 'all_albums'
+    login_url = 'music:login'
 
     def get_queryset(self):
         return Album.objects.filter(user=self.request.user).order_by('-is_favourite', 'id')
 
     def get_context_data(self, **kwargs):
+        """ Checks whether the last letter of the user's first name is an "s", in which case
+        it has to write "___s' albums" instead of "___'s albums". """
         context = super(IndexView, self).get_context_data()
-        context['user'] = self.request.user
+        user = self.request.user
+
+        first_name = user.first_name
+        if first_name[len(first_name)-1] == "s":
+            context['first_name_albums'] = user.first_name + "' " + "albums:"
+        else:
+            context['first_name_albums'] = user.first_name + "'s " + "albums:"
         return context
 
 
@@ -27,13 +38,15 @@ class DetailView(generic.DetailView):
     model = Album
 
     def get_context_data(self, **kwargs):
-        """ The "all_albums" attribute in "detail.html" is given the other albums,
-        where the artist is the same. However, this also excludes the album where the title
-        is equal is to the one on this page - thus, providing us with the artist's other albums."""
+        """ The "all_albums" attribute in "detail.html" is given the artist's other albums,
+        where the album's User field is the same as the request's User ID.
+        However, this also excludes the album where the title is equal to the one on this page
+         - thus, providing us with the artist's other albums."""
 
         context = super(DetailView, self).get_context_data(**kwargs)
         album = self.object
-        context["all_albums"] = Album.objects.filter(artist=album.artist).exclude(title=album.title)
+        user_albums = Album.objects.filter(user=self.request.user)
+        context["all_albums"] = user_albums.filter(artist=album.artist).exclude(title=album.title)
         return context
 
 
@@ -76,7 +89,7 @@ def favourite_song(request, album_id, song_id):
 
 def search_albums(request):
     query = request.GET.get("q")
-    album_list = Album.objects.filter(Q(title__contains=query))
+    album_list = Album.objects.filter(user=request.user).filter(Q(title__contains=query))
     return render(request, 'music/index.html', {
         'all_albums': album_list,
         'search': True,
@@ -113,8 +126,8 @@ class SongView(generic.ListView):
         song_list = Song.objects.filter(pk__in=song_ids)
 
         # See if the query is empty (if so, just order all songs with favourite songs first
-        # If not, filter the songs according to the query (this does not take into account lower/upper case)
-        # and then order with favourite songs first
+        # If not, filter the songs according to the query (this does not take into account
+        # letter case) and then order with favourite songs first.
         try:
             query = self.request.GET.get("s")
             song_list = song_list.filter(Q(title__icontains=query)).order_by('-is_favourite', 'id')
@@ -129,6 +142,10 @@ class UserFormView(View):
 
     # Display blank form to new user
     def get(self, request):
+
+        if request.user.is_authenticated:
+            return redirect('music:index')
+
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
@@ -157,6 +174,11 @@ class UserFormView(View):
         return render(request, self.template_name, {'form': form})
 
 
+class LogInView(LoginView):
+    template_name = 'music/login.html'
+    success_url = 'music:index'
+
+
 def logout_user(request):
-    # logout(request)
-    pass
+    logout(request)
+    return redirect('music:index')
