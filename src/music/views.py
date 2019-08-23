@@ -14,7 +14,7 @@ class IndexView(generic.ListView):
     context_object_name = 'all_albums'
 
     def get_queryset(self):
-        return Album.objects.filter(user=self.request.user)
+        return Album.objects.filter(user=self.request.user).order_by('-is_favourite', 'id')
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data()
@@ -57,6 +57,13 @@ class AlbumUpdate(UpdateView):
 class AlbumDelete(DeleteView):
     model = Album
     success_url = reverse_lazy('music:index')
+
+
+def favourite_album(request, album_id):
+    album = Album.objects.get(pk=album_id)
+    album.is_favourite = not album.is_favourite
+    album.save()
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def favourite_song(request, album_id, song_id):
@@ -110,10 +117,10 @@ class SongView(generic.ListView):
         # and then order with favourite songs first
         try:
             query = self.request.GET.get("s")
-            song_list = song_list.filter(Q(title__icontains=query)).order_by('-is_favourite')
+            song_list = song_list.filter(Q(title__icontains=query)).order_by('-is_favourite', 'id')
             return song_list
         except ValueError:
-            return Song.objects.all().order_by('-is_favourite')
+            return Song.objects.all().order_by('-is_favourite', 'id')
 
 
 class UserFormView(View):
@@ -151,5 +158,5 @@ class UserFormView(View):
 
 
 def logout_user(request):
-    #logout(request)
+    # logout(request)
     pass

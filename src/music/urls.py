@@ -22,6 +22,9 @@ urlpatterns = [
     # /music/album/2/delete/
     path('album/<pk>/delete/', views.AlbumDelete.as_view(), name='album-delete'),
 
+    # /music/71/favourite/
+    path('<album_id>/favourite/', views.favourite_album, name='album-favourite'),
+
     # /music/71/2/favourite/
     path('<album_id>/<song_id>/favourite/', views.favourite_song, name='favourite-song'),
 

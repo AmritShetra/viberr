@@ -34,8 +34,12 @@
                         </button>
                     </form>
 
-                    <a href="" class="btn btn-sm" role="button">
-                        <span class="glyphicon glyphicon-star"></span>
+                    <a href="{% url 'music:album-favourite' album.id %}" class="btn btn-sm" role="button">
+                        {% if album.is_favourite %}
+                            <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/star-20.png" alt="favourite">
+                        {% else %}
+                            <img src="https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/star-16.png" alt="not-favourite">
+                        {% endif %}
                     </a>
 
                 </div>
