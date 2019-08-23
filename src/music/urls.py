@@ -10,6 +10,9 @@ urlpatterns = [
     # /music/login/
     path('login/', views.LogInView.as_view(), name='login'),
 
+    # /music/logout/
+    path('logout', views.logout_user, name='logout'),
+
     # /music/register/
     path('register/', views.UserFormView.as_view(), name='register'),
 
@@ -34,15 +37,15 @@ urlpatterns = [
     # /music/search/
     path('search/results/', views.search_albums, name='album-search'),
 
-    # /music/71/add/
+    # /music/72/add/
     path('<album_id>/add/', views.SongCreate.as_view(), name='song-add'),
+
+    # /music/72/2/edit
+    path('<pk>/<song_id>/edit/', views.SongUpdate.as_view(), name='song-update'),
 
     # /music/songs/2/delete/
     path('songs/<pk>/delete/', views.SongDelete.as_view(), name='song-delete'),
 
     # /music/songs/
     path('songs', views.SongView.as_view(), name='songs'),
-
-    # /music/logout/
-    path('logout', views.logout_user, name='logout'),
 ]

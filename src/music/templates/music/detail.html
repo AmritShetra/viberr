@@ -36,6 +36,9 @@
             <div class="col-sm-8 col-md-9">
                 <div class="panel panel-default">
                     <div class="panel-body">
+                        <a href="{% url 'music:album-update' album.id %}">
+                            <button class="btn btn-primary">Edit Album</button>
+                        </a>
                         <h3>Songs</h3>
                         <a class="btn btn-default" href="{% url 'music:song-add' album_id=album.id %}" role="button">
                             Add Song
@@ -72,6 +75,11 @@
                                             </a>
                                         </td>
                                         <td>
+                                            <a href="{% url 'music:song-update' album.id song.id %}">
+                                                <button class="btn btn-primary">
+                                                    Edit
+                                                </button>
+                                            </a>
                                             <form action="{% url 'music:song-delete' song.id %}" method="post" style="display: inline;">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="song_id" value="{{ song.id }}" />

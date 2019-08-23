@@ -26,7 +26,7 @@
                             </table>
 
                             <input type="submit" value="Sign In" class="btn btn-success center-block">
-                            <input type="hidden" name="next" value="{{ next }}">
+                            <input type="hidden" name="next" value="{% url 'music:index' %}">
                         </form>
 
                         {%  if form.errors %}

@@ -1,14 +1,17 @@
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, logout_then_login
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import generic
 from django.views.generic import View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from .forms import UserForm, LogInForm
+from .forms import UserForm
 from .models import Album, Song
+
+AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
+IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
@@ -46,7 +49,7 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         album = self.object
         user_albums = Album.objects.filter(user=self.request.user)
-        context["all_albums"] = user_albums.filter(artist=album.artist).exclude(title=album.title)
+        context["all_albums"] = user_albums.filter(artist=album.artist).exclude(title=album.title).order_by("-id")
         return context
 
 
@@ -103,13 +106,23 @@ class SongCreate(CreateView):
     def form_valid(self, form):
         album = Album.objects.get(pk=self.kwargs['album_id'])
         form.instance.album = album
+        file_type = form.instance.audio_file.url.split('.')[-1]
+        file_type = file_type.lower()
+        if file_type not in AUDIO_FILE_TYPES:
+            return redirect(self.request.META.get('HTTP_REFERER'))
         return super(SongCreate, self).form_valid(form)
+
+
+class SongUpdate(UpdateView):
+    model = Song
+    fields = ['title', 'audio_file']
 
 
 class SongDelete(DeleteView):
     model = Song
 
     def get_success_url(self):
+        """ On success, take the user back to the album of the song they have just deleted."""
         album = self.object.album
         return reverse_lazy('music:detail', kwargs={'pk': album.id})
 
@@ -178,7 +191,13 @@ class LogInView(LoginView):
     template_name = 'music/login.html'
     success_url = 'music:index'
 
+    def dispatch(self, request, *args, **kwargs):
+        """ If the user is logged in when they enter this page, send them to the index."""
+        if self.request.user.is_authenticated:
+            return redirect('music:index')
+        return super().dispatch(request, *args, **kwargs)
+
 
 def logout_user(request):
-    logout(request)
-    return redirect('music:index')
+    """ Logout the user, then take them to the login page."""
+    return logout_then_login(request, login_url='music:login')
