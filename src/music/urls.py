@@ -11,7 +11,7 @@ urlpatterns = [
     path('login/', views.LogInView.as_view(), name='login'),
 
     # /music/logout/
-    path('logout', views.logout_user, name='logout'),
+    path('logout', views.LogOutView.as_view(), name='logout'),
 
     # /music/register/
     path('register/', views.UserFormView.as_view(), name='register'),

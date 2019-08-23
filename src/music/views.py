@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, logout_then_login
+from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.views import generic
@@ -190,14 +190,8 @@ class UserFormView(View):
 class LogInView(LoginView):
     template_name = 'music/login.html'
     success_url = 'music:index'
-
-    def dispatch(self, request, *args, **kwargs):
-        """ If the user is logged in when they enter this page, send them to the index."""
-        if self.request.user.is_authenticated:
-            return redirect('music:index')
-        return super().dispatch(request, *args, **kwargs)
+    redirect_authenticated_user = True  # Check settings.py for the LOGIN_REDIRECT_URL (music:index)
 
 
-def logout_user(request):
-    """ Logout the user, then take them to the login page."""
-    return logout_then_login(request, login_url='music:login')
+class LogOutView(LogoutView):
+    next_page = 'music:login'
