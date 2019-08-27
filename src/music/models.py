@@ -14,6 +14,9 @@ class Album(models.Model):
     def get_absolute_url(self):
         return reverse('music:detail', kwargs={'pk': self.pk})
 
+    def get_number_of_songs(self):
+        return self.song_set.count()
+
     def __str__(self):
         return self.title + ' - ' + self.artist
 

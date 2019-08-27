@@ -38,9 +38,11 @@
                             {{ song.album.artist }}
                         </td>
                         <td>
-                            <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-play"></span> Play
-                            </button>
+                            <a target="_blank" href="{{ song.audio_file.url }}">
+                                <button type="button" class="btn btn-success">
+                                    <span class="glyphicon glyphicon-play"></span> Play
+                                </button>
+                            </a>
                         </td>
                         <td>
                             <a href="{% url 'music:detail' song.album.id %}">

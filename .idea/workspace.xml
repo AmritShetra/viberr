@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="31a8908e-bdd4-4e41-bc71-4a8b6a3183ab" name="Default Changelist" comment="" />
+    <list default="true" id="31a8908e-bdd4-4e41-bc71-4a8b6a3183ab" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/media/220px-ImagineDragonsEvolve.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/media/220px-Origins_cover.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/media/Imagine_Dragons_-_Smoke__Mirrors.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/media/Walk_the_Moon_-_Talking_Is_Hard.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/songs.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/songs.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/views.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +164,7 @@
       <workItem from="1566554448585" duration="21001000" />
       <workItem from="1566581309244" duration="431000" />
       <workItem from="1566899421786" duration="958000" />
-      <workItem from="1566900675553" duration="3159000" />
+      <workItem from="1566900675553" duration="18130000" />
     </task>
     <servers />
   </component>

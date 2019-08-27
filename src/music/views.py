@@ -24,8 +24,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return Album.objects.filter(user=self.request.user).order_by('-is_favourite', 'id')
 
     def get_context_data(self, **kwargs):
-        """ Checks whether the last letter of the user's first name is an "s", in which case
-        it has to write "___s' albums" instead of "___'s albums". """
+        """
+        Checks whether the last letter of the user's first name is an "s", in which case
+        it has to write "___s' albums" instead of "___'s albums".
+        """
         context = super(IndexView, self).get_context_data()
         user = self.request.user
 
@@ -42,10 +44,12 @@ class DetailView(generic.DetailView):
     model = Album
 
     def get_context_data(self, **kwargs):
-        """ The "all_albums" attribute in "detail.html" is given the artist's other albums,
+        """
+        The "all_albums" attribute in "detail.html" is given the artist's other albums,
         where the album's User field is the same as the request's User ID.
-        However, this also excludes the album where the title is equal to the one on this page
-         - thus, providing us with the artist's other albums."""
+        However, this also excludes the album where the title is equal to the one
+        on this page - thus, providing us with the artist's other albums.
+        """
 
         context = super(DetailView, self).get_context_data(**kwargs)
         album = self.object
@@ -132,7 +136,9 @@ class SongDelete(DeleteView):
     model = Song
 
     def get_success_url(self):
-        """ On success, take the user back to the album of the song they have just deleted."""
+        """
+        On success, take the user back to the album of the song they have just deleted.
+        """
         album = self.object.album
         return reverse_lazy('music:detail', kwargs={'pk': album.id})
 
