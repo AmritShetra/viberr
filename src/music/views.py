@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
@@ -59,9 +60,16 @@ class AlbumCreate(CreateView):
 
     def form_valid(self, form):
         """ Overriding form_valid, which does the form saving. Here, we get the "user" who is
-        currently logged in and assign the album to them, before we save the album."""
+        currently logged in and assign the album to them. We then check if the logo's file type
+        is in valid - if so, refresh the page. If not, save the album into the database."""
         user = self.request.user
         form.instance.user = user
+
+        file_type = form.instance.logo.url.split('.')[-1]
+        file_type = file_type.lower()
+        if file_type not in IMAGE_FILE_TYPES:
+            messages.add_message(self.request, messages.INFO, "Invalid file type. Please try again.")
+            return redirect(self.request.META.get('HTTP_REFERER'))
         return super(AlbumCreate, self).form_valid(form)
 
 
@@ -106,9 +114,11 @@ class SongCreate(CreateView):
     def form_valid(self, form):
         album = Album.objects.get(pk=self.kwargs['album_id'])
         form.instance.album = album
+
         file_type = form.instance.audio_file.url.split('.')[-1]
         file_type = file_type.lower()
         if file_type not in AUDIO_FILE_TYPES:
+            messages.add_message(self.request, messages.INFO, "Invalid file type. Please try again.")
             return redirect(self.request.META.get('HTTP_REFERER'))
         return super(SongCreate, self).form_valid(form)
 
