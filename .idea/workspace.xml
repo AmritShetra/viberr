@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="31a8908e-bdd4-4e41-bc71-4a8b6a3183ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/music/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/music/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/viberr/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/viberr/settings.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -155,6 +152,8 @@
       <workItem from="1566486937343" duration="9332000" />
       <workItem from="1566496844074" duration="71000" />
       <workItem from="1566554448585" duration="21001000" />
+      <workItem from="1566581309244" duration="431000" />
+      <workItem from="1566899421786" duration="255000" />
     </task>
     <servers />
   </component>
