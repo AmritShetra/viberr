@@ -1,5 +1,5 @@
 ## viberr
-A music application made using Django, with a PostgreSQL database, that allows you to upload and store your music on the cloud. I developed this as part of the developer onboarding process at Reckon Digital, as I set out to become familiar with the technologies used. I read the official Django documentation, along with thenewboston's Django tutorial video series to create the initial version of this, then decided to try and create extra features myself.
+A music web application made using Django, with a PostgreSQL database, that allows you to upload and store your music on the cloud. I developed this as part of the developer onboarding process at Reckon Digital, as I set out to become familiar with the technologies used. I read the [official Django documentation](https://docs.djangoproject.com/en/2.2/intro/tutorial01/), along with [thenewboston's Django tutorial video series](https://www.youtube.com/watch?v=qgGIqRFvFFk&list=PL6gx4Cwl9DGBlmzzFcLgDhKTTfNLfX1IK) to create the initial version of this, then decided to try and create extra features myself.
 
 ### Extra features, you say?
 * User registration and authentication.

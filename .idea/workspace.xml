@@ -4,7 +4,14 @@
     <list default="true" id="31a8908e-bdd4-4e41-bc71-4a8b6a3183ab" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/user.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/user.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/music/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media/220px-ImagineDragonsEvolve.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media/220px-Night_Visions_Album_Cover.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media/220px-Origins_cover.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media/Imagine_Dragons_-_Radioactive.mp3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media/Imagine_Dragons_-_Smoke__Mirrors.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/media/Walk_the_Moon_-_Talking_Is_Hard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/music/templates/music/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/templates/music/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/music/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/music/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,6 +43,7 @@
         <option value="CSS File" />
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -159,7 +167,7 @@
       <workItem from="1566899421786" duration="958000" />
       <workItem from="1566900675553" duration="18315000" />
       <workItem from="1566986643010" duration="96000" />
-      <workItem from="1566986775967" duration="7735000" />
+      <workItem from="1566986775967" duration="20406000" />
     </task>
     <servers />
   </component>

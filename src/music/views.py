@@ -16,17 +16,20 @@ IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
 class IndexView(LoginRequiredMixin, generic.ListView):
+    """Album index view."""
     template_name = 'music/index.html'
     context_object_name = 'all_albums'
     login_url = 'music:login'
 
     def get_queryset(self):
+        """
+        Returns the user's albums, ordered by favourites and then IDs.
+        """
         return Album.objects.filter(user=self.request.user).order_by('-is_favourite', 'id')
 
     def get_context_data(self, **kwargs):
         """
-        Checks whether the last letter of the user's first name is an "s", in which case
-        it has to write "___s' albums" instead of "___'s albums".
+        Returns one of two possible strings, depending on if the user's name ends in an "s".
         """
         context = super(IndexView, self).get_context_data()
         user = self.request.user
@@ -40,18 +43,15 @@ class IndexView(LoginRequiredMixin, generic.ListView):
 
 
 class DetailView(LoginRequiredMixin, generic.DetailView):
+    """Album detail view."""
     template_name = 'music/detail.html'
     model = Album
     login_url = 'music:login'
 
     def get_context_data(self, **kwargs):
         """
-        The "all_albums" attribute in "detail.html" is given the artist's other albums,
-        where the album's User field is the same as the request's User ID.
-        However, this also excludes the album where the title is equal to the one
-        on this page - thus, providing us with the artist's other albums.
+        Gets the artist's other albums, having excluded the one being displayed currently.
         """
-
         context = super(DetailView, self).get_context_data(**kwargs)
         album = self.object
         user_albums = Album.objects.filter(user=self.request.user)
@@ -60,14 +60,16 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
 
 
 class AlbumCreate(LoginRequiredMixin, CreateView):
+    """Album create view."""
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
     login_url = 'music:login'
 
     def form_valid(self, form):
-        """ Overriding form_valid, which does the form saving. Here, we get the "user" who is
-        currently logged in and assign the album to them. We then check if the logo's file type
-        is in valid - if so, refresh the page. If not, save the album into the database."""
+        """
+        Gets the current user and assigns the album to them.
+        Checks if the logo's file type is invalid - if so, refresh and display a blank form.
+        """
         user = self.request.user
         form.instance.user = user
 
@@ -80,18 +82,23 @@ class AlbumCreate(LoginRequiredMixin, CreateView):
 
 
 class AlbumUpdate(LoginRequiredMixin, UpdateView):
+    """Edit album view."""
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
     login_url = "music:login"
 
 
 class AlbumDelete(LoginRequiredMixin, DeleteView):
+    """Delete album view."""
     model = Album
     success_url = reverse_lazy('music:index')
     login_url = "music:login"
 
 
 def favourite_album(request, album_id):
+    """
+    Flips the given album's "is_favourite" field and returns the user to the previous page.
+    """
     if not request.user.is_authenticated:
         return redirect("music:login")
     album = Album.objects.get(pk=album_id)
@@ -101,6 +108,9 @@ def favourite_album(request, album_id):
 
 
 def favourite_song(request, album_id, song_id):
+    """
+    Same as above.
+    """
     if not request.user.is_authenticated:
         return redirect("music:login")
     album = Album.objects.get(pk=album_id)
@@ -111,6 +121,9 @@ def favourite_song(request, album_id, song_id):
 
 
 def search_albums(request):
+    """
+    Gets the query, filters the Album table from the database and sends them to the main page.
+    """
     query = request.GET.get("q")
     album_list = Album.objects.filter(user=request.user).filter(Q(title__contains=query))
     return render(request, 'music/index.html', {
@@ -120,11 +133,16 @@ def search_albums(request):
 
 
 class SongCreate(LoginRequiredMixin, CreateView):
+    """Create song view."""
     model = Song
     fields = ['title', 'audio_file']
     login_url = "music:login"
 
     def form_valid(self, form):
+        """
+        Assigns the song to the album from the previous page.
+        Gets the extension of the audio file's url and redirects to previous page if invalid.
+        """
         album = Album.objects.get(pk=self.kwargs['album_id'])
         form.instance.album = album
 
@@ -137,12 +155,14 @@ class SongCreate(LoginRequiredMixin, CreateView):
 
 
 class SongUpdate(LoginRequiredMixin, UpdateView):
+    """Song edit view."""
     model = Song
     fields = ['title', 'audio_file']
     login_url = "music:login"
 
 
 class SongDelete(LoginRequiredMixin, DeleteView):
+    """Song delete view."""
     model = Song
     login_url = "music:login"
 
@@ -155,34 +175,44 @@ class SongDelete(LoginRequiredMixin, DeleteView):
 
 
 class SongView(LoginRequiredMixin, generic.ListView):
+    """Song list view."""
     template_name = 'music/songs.html'
     context_object_name = 'all_songs'
     login_url = "music:login"
 
     def get_queryset(self):
+        """
+        Get the user's songs from the database, then filter if there is a search.
+        """
+        # Searches through the database's Album table for the user's albums.
         song_ids = []
         for album in Album.objects.filter(user=self.request.user):
             for song in album.song_set.all():
+                # Adds the ID of each song to a list.
                 song_ids.append(song.pk)
+
+        # Filters the database for all songs in the above list.
         song_list = Song.objects.filter(pk__in=song_ids)
 
-        # See if the query is empty (if so, just order all songs with favourite songs first
-        # If not, filter the songs according to the query (this does not take into account
-        # letter case) and then order with favourite songs first.
+        # Check the page request for a search query.
         try:
             query = self.request.GET.get("s")
-            song_list = song_list.filter(Q(title__icontains=query)).order_by('-is_favourite', 'id')
-            return song_list
+            return song_list.filter(Q(title__icontains=query)).order_by('-is_favourite', 'id')
+
+        # An error is returned if there is no search, so display all songs.
         except ValueError:
-            return Song.objects.all().order_by('-is_favourite', 'id')
+            return song_list.order_by('-is_favourite', 'id')
 
 
 class UserFormView(View):
+    """User creation view."""
     form_class = UserForm
     template_name = 'music/registration_form.html'
 
-    # Display blank form to new user
     def get(self, request):
+        """
+        Displays a blank form to a new user.
+        """
 
         if request.user.is_authenticated:
             return redirect('music:index')
@@ -190,8 +220,10 @@ class UserFormView(View):
         form = self.form_class(None)
         return render(request, self.template_name, {'form': form})
 
-    # Process form data
     def post(self, request):
+        """
+        Process the form data.
+        """
         form = self.form_class(request.POST)
 
         if form.is_valid():
@@ -216,10 +248,12 @@ class UserFormView(View):
 
 
 class LogInView(LoginView):
+    """User login view."""
     template_name = 'music/login.html'
     success_url = 'music:index'
     redirect_authenticated_user = True  # Check settings.py for the LOGIN_REDIRECT_URL (music:index)
 
 
 class LogOutView(LogoutView):
+    """User logout view."""
     next_page = 'music:login'

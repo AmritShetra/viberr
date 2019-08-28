@@ -2,6 +2,7 @@
   <dictionary name="user">
     <words>
       <w>endblock</w>
+      <w>lettercase</w>
       <w>testcase</w>
       <w>viberr</w>
     </words>
