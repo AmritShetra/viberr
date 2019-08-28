@@ -82,10 +82,11 @@
                                                     Edit
                                                 </button>
                                             </a>
+
                                             <form action="{% url 'music:song-delete' song.id %}" method="post" style="display: inline;">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="song_id" value="{{ song.id }}" />
-                                                <button type="submit" class="btn btn-danger">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete {{ song.title }}?')">
                                                     <span class="glyphicon glyphicon-remove"></span> Delete
                                                 </button>
                                             </form>

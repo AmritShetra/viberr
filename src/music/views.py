@@ -1,6 +1,7 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, update_session_auth_hash
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db.models import Q
 from django.shortcuts import redirect, render
@@ -257,3 +258,19 @@ class LogInView(LoginView):
 class LogOutView(LogoutView):
     """User logout view."""
     next_page = 'music:login'
+
+
+class UserUpdate(LoginRequiredMixin, UpdateView):
+    """User edit view."""
+    model = User
+    form_class = UserForm
+    template_name = 'music/edit_user_form.html'
+    login_url = "music:login"
+
+    def form_valid(self, form):
+        user = form.save(commit=True)
+        password = form.cleaned_data['password']
+        user.set_password(password)
+        user.save()
+        update_session_auth_hash(self.request, user)
+        return redirect(self.request.META.get('HTTP_REFERER'))

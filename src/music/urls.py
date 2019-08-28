@@ -48,4 +48,7 @@ urlpatterns = [
 
     # /music/songs/
     path('songs', views.SongView.as_view(), name='songs'),
+
+    # /music/user/
+    path('user/<pk>/edit', views.UserUpdate.as_view(), name='user-edit'),
 ]
