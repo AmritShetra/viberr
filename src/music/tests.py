@@ -1,5 +1,6 @@
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.models import User
+from django.http import HttpResponseRedirect
 from django.test import TestCase
 from django.urls import reverse
 
@@ -57,4 +58,51 @@ class IndexViewTests(TestCase):
         self.assertQuerysetEqual(
             response.context['all_albums'],
             ['<Album: 0 - >', '<Album: 2 - >', '<Album: 1 - >']
+        )
+
+    def test_logged_out(self):
+        """
+        If the user is not logged in, they are redirected to the "music:login" page.
+        """
+        response = self.client.get(reverse('music:index'))
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, "/music/login/?next=/music/")
+
+    def test_get_context_data_name_without_s(self):
+        """
+        get_context_data() returns "Test's albums" if the user's first name is "Test".
+        """
+        user = User.objects.create(username="test", first_name="Test")
+        self.client.force_login(user)
+        response = self.client.get(reverse('music:index'))
+        self.assertEqual(response.context['first_name_albums'], "Test's albums:")
+
+    def test_get_context_data_name_with_s(self):
+        """
+        get_context_data() returns "James' albums" if the user's first name is "James".
+        """
+        user = User.objects.create(username="james", first_name="James")
+        self.client.force_login(user)
+        response = self.client.get(reverse('music:index'))
+        self.assertEqual(response.context['first_name_albums'], "James' albums:")
+
+
+class DetailViewTests(TestCase):
+
+    def test_get_context_data(self):
+        """
+        get_context_data() returns artist's other albums, sorted by ID, excluding other users' albums.
+        """
+        user = User.objects.create(username="user")
+        user1 = User.objects.create(username="user1")
+
+        for i in range(4):
+            Album.objects.create(title=i+1, artist="Imagine Dragons", user=user, logo="test.png")
+        Album.objects.create(title=5, artist="Imagine Dragons", user=user1, logo="test.png")
+
+        self.client.force_login(user)
+        response = self.client.get(reverse('music:detail', kwargs={'pk': 2}))
+        self.assertQuerysetEqual(
+            response.context['all_albums'],
+            ['<Album: 2 - Imagine Dragons>', '<Album: 3 - Imagine Dragons>', '<Album: 4 - Imagine Dragons>']
         )

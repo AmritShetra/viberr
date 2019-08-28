@@ -39,9 +39,10 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-class DetailView(generic.DetailView):
+class DetailView(LoginRequiredMixin, generic.DetailView):
     template_name = 'music/detail.html'
     model = Album
+    login_url = 'music:login'
 
     def get_context_data(self, **kwargs):
         """
@@ -54,13 +55,14 @@ class DetailView(generic.DetailView):
         context = super(DetailView, self).get_context_data(**kwargs)
         album = self.object
         user_albums = Album.objects.filter(user=self.request.user)
-        context["all_albums"] = user_albums.filter(artist=album.artist).exclude(title=album.title).order_by("-id")
+        context["all_albums"] = user_albums.filter(artist=album.artist).exclude(title=album.title).order_by("id")
         return context
 
 
-class AlbumCreate(CreateView):
+class AlbumCreate(LoginRequiredMixin, CreateView):
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
+    login_url = 'music:login'
 
     def form_valid(self, form):
         """ Overriding form_valid, which does the form saving. Here, we get the "user" who is
@@ -77,17 +79,21 @@ class AlbumCreate(CreateView):
         return super(AlbumCreate, self).form_valid(form)
 
 
-class AlbumUpdate(UpdateView):
+class AlbumUpdate(LoginRequiredMixin, UpdateView):
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
+    login_url = "music:login"
 
 
-class AlbumDelete(DeleteView):
+class AlbumDelete(LoginRequiredMixin, DeleteView):
     model = Album
     success_url = reverse_lazy('music:index')
+    login_url = "music:login"
 
 
 def favourite_album(request, album_id):
+    if not request.user.is_authenticated:
+        return redirect("music:login")
     album = Album.objects.get(pk=album_id)
     album.is_favourite = not album.is_favourite
     album.save()
@@ -95,6 +101,8 @@ def favourite_album(request, album_id):
 
 
 def favourite_song(request, album_id, song_id):
+    if not request.user.is_authenticated:
+        return redirect("music:login")
     album = Album.objects.get(pk=album_id)
     song = album.song_set.get(pk=song_id)
     song.is_favourite = not song.is_favourite
@@ -111,9 +119,10 @@ def search_albums(request):
         'query': query})
 
 
-class SongCreate(CreateView):
+class SongCreate(LoginRequiredMixin, CreateView):
     model = Song
     fields = ['title', 'audio_file']
+    login_url = "music:login"
 
     def form_valid(self, form):
         album = Album.objects.get(pk=self.kwargs['album_id'])
@@ -127,13 +136,15 @@ class SongCreate(CreateView):
         return super(SongCreate, self).form_valid(form)
 
 
-class SongUpdate(UpdateView):
+class SongUpdate(LoginRequiredMixin, UpdateView):
     model = Song
     fields = ['title', 'audio_file']
+    login_url = "music:login"
 
 
-class SongDelete(DeleteView):
+class SongDelete(LoginRequiredMixin, DeleteView):
     model = Song
+    login_url = "music:login"
 
     def get_success_url(self):
         """
@@ -143,9 +154,10 @@ class SongDelete(DeleteView):
         return reverse_lazy('music:detail', kwargs={'pk': album.id})
 
 
-class SongView(generic.ListView):
+class SongView(LoginRequiredMixin, generic.ListView):
     template_name = 'music/songs.html'
     context_object_name = 'all_songs'
+    login_url = "music:login"
 
     def get_queryset(self):
         song_ids = []
