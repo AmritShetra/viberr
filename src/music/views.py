@@ -36,10 +36,13 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         user = self.request.user
 
         first_name = user.first_name
-        if first_name[len(first_name)-1] == "s":
-            context['first_name_albums'] = user.first_name + "' " + "albums:"
+        if not first_name:
+            context['first_name_albums'] = "Your albums:"
         else:
-            context['first_name_albums'] = user.first_name + "'s " + "albums:"
+            if first_name[len(first_name)-1] == "s":
+                context['first_name_albums'] = user.first_name + "' " + "albums:"
+            else:
+                context['first_name_albums'] = user.first_name + "'s " + "albums:"
         return context
 
 
@@ -267,7 +270,19 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     template_name = 'music/edit_user_form.html'
     login_url = "music:login"
 
+    def dispatch(self, request, *args, **kwargs):
+        """
+        If the user's ID is not the same as the URL's user ID, redirect them away.
+        """
+        if self.request.user.id != int(self.kwargs['pk']):
+            return redirect("music:index")
+        return super(UserUpdate, self).dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
+        """
+        Saves the user's details into the database.
+        User is logged out by default when the password is changed, so reauthenticate them.
+        """
         user = form.save(commit=True)
         password = form.cleaned_data['password']
         user.set_password(password)
