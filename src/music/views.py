@@ -52,6 +52,20 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
     model = Album
     login_url = 'music:login'
 
+    def dispatch(self, request, *args, **kwargs):
+        """
+        If the album does not belong to this user, redirect them away.
+        """
+        album = Album.objects.get(id=self.kwargs['pk'])
+        user_albums = Album.objects.filter(user=self.request.user)
+        album_id_list = []
+        for user_album in user_albums:
+            album_id_list.append(user_album.id)
+
+        if album.id not in album_id_list:
+            return redirect("music:index")
+        return super(DetailView, self).dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         """
         Gets the artist's other albums, having excluded the one being displayed currently.
@@ -217,7 +231,6 @@ class UserFormView(View):
         """
         Displays a blank form to a new user.
         """
-
         if request.user.is_authenticated:
             return redirect('music:index')
 

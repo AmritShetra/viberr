@@ -47,6 +47,23 @@
                 </div>
                 {% cycle '' '' '' '' '' '<div class="clearfix visible-lg"></div>' %}
             {% endfor %}
+
+            <!-- Check if all_albums is empty -->
+            {% if not all_albums %}
+                <a href="{% url "music:album-add" %}">
+                    <div class="col-sm-4 col-lg-3">
+                            <div class="thumbnail">
+                                    <div style="text-align: center;">
+                                        <span class="glyphicon glyphicon-plus" style="font-size: 50px;"></span>
+                                    </div>
+                                <div class="caption text-center">
+                                    <h4>Add a new album</h4>
+                                </div>
+                            </div>
+                    </div>
+                </a>
+            {% endif %}
+
         </div>
     </div>
 {% endblock %}

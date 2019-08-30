@@ -89,6 +89,21 @@ class IndexViewTests(TestCase):
 
 class DetailViewTests(TestCase):
 
+    def test_dispatch_other_users_album(self):
+        """
+        dispatch() redirects user to index page if they search for an album that isn't theirs.
+        """
+        user = User.objects.create(username="user")
+        user1 = User.objects.create(username="user1")
+
+        Album.objects.create(title="pk is 2", artist="user", user=user, logo="test.png")
+        Album.objects.create(title="pk is 3", artist="user1", user=user1, logo="test.png")
+
+        self.client.force_login(user)
+        response = self.client.get(reverse('music:detail', kwargs={'pk': 3}))
+
+        self.assertRedirects(response, reverse('music:index'), status_code=302, target_status_code=200)
+
     def test_get_context_data(self):
         """
         get_context_data() returns artist's other albums, sorted by ID, excluding other users' albums.
@@ -101,7 +116,9 @@ class DetailViewTests(TestCase):
         Album.objects.create(title=5, artist="Imagine Dragons", user=user1, logo="test.png")
 
         self.client.force_login(user)
-        response = self.client.get(reverse('music:detail', kwargs={'pk': 2}))
+        # PK of first album is 4 for some reason
+        response = self.client.get(reverse('music:detail', kwargs={'pk': 4}))
+
         self.assertQuerysetEqual(
             response.context['all_albums'],
             ['<Album: 2 - Imagine Dragons>', '<Album: 3 - Imagine Dragons>', '<Album: 4 - Imagine Dragons>']
