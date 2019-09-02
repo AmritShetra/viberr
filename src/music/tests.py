@@ -1,10 +1,9 @@
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Album, Song
+from .models import Album
 
 
 class TestcaseUserBackend(object):
@@ -96,11 +95,11 @@ class DetailViewTests(TestCase):
         user = User.objects.create(username="user")
         user1 = User.objects.create(username="user1")
 
-        Album.objects.create(title="pk is 2", artist="user", user=user, logo="test.png")
-        Album.objects.create(title="pk is 3", artist="user1", user=user1, logo="test.png")
+        Album.objects.create(title="1", artist="user", user=user, logo="test.png", pk=1)
+        Album.objects.create(title="2", artist="user1", user=user1, logo="test.png", pk=2)
 
         self.client.force_login(user)
-        response = self.client.get(reverse('music:detail', kwargs={'pk': 3}))
+        response = self.client.get(reverse('music:detail', kwargs={'pk': 2}))
 
         self.assertRedirects(response, reverse('music:index'), status_code=302, target_status_code=200)
 
@@ -111,15 +110,33 @@ class DetailViewTests(TestCase):
         user = User.objects.create(username="user")
         user1 = User.objects.create(username="user1")
 
+        # i starts at 0, generally easier to start the title numbering 1 instead
         for i in range(4):
-            Album.objects.create(title=i+1, artist="Imagine Dragons", user=user, logo="test.png")
-        Album.objects.create(title=5, artist="Imagine Dragons", user=user1, logo="test.png")
+            Album.objects.create(title=i+1, artist="Imagine Dragons", user=user, logo="test.png", pk=i+1)
+        Album.objects.create(title=5, artist="Imagine Dragons", user=user1, logo="test.png", pk=5)
 
         self.client.force_login(user)
-        # PK of first album is 4 for some reason
-        response = self.client.get(reverse('music:detail', kwargs={'pk': 4}))
+        # Get album 1 - other albums should ignore Album 5 but retrieve Albums 2, 3 and 4
+        response = self.client.get(reverse('music:detail', kwargs={'pk': 1}))
 
         self.assertQuerysetEqual(
             response.context['all_albums'],
             ['<Album: 2 - Imagine Dragons>', '<Album: 3 - Imagine Dragons>', '<Album: 4 - Imagine Dragons>']
         )
+
+
+class AlbumCreateTests(TestCase):
+
+    def test_form_valid_with_invalid_file_type(self):
+        """
+        form_valid() should ensure it detects invalid file types.
+        """
+        user = User.objects.create(username="user")
+        self.client.force_login(user)
+        album = Album.objects.create(title="1", artist="user", logo="test.mp3", pk=1)
+
+        file_type = album.logo.url.split('.')[-1]
+        file_type = file_type.lower()
+
+        image_file_types = ['png', 'jpg', 'jpeg']
+        self.assertNotIn(file_type, image_file_types)
