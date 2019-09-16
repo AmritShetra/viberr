@@ -47,5 +47,6 @@ sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py createsuperuser"
 ```
 
 ### Screenshots
+* Here are two examples of pages accessible on viberr:
 ![Home Page](https://i.imgur.com/FrJNPK5.png)
 ![Songs](https://i.imgur.com/durTSd9.png)
