@@ -22,11 +22,16 @@ sudo docker-compose up --build
 ```
 sudo docker-compose up
 ```
-* The following commands can be used to access the PostgreSQL database:  
+* The following commands can be used to access PostgreSQL:  
 ```
 sudo docker exec -it viberr_postgres_1 bash  
 su postgres  
 psql
+```
+* You can then add a new database and connect to it (then use normal SQL to view tables etc.):
+```
+CREATE DATABASE viberr_db;
+\c viberr_db
 ```
 * To access the shell, you have to enter the container and access the terminal:  
 ```
@@ -36,3 +41,11 @@ sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py shell"
 ```
 sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py test"
 ```
+* When you create a new database, you might need to add a new admin user:
+```
+sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py createsuperuser"
+```
+
+### Screenshots
+![Home Page](https://i.imgur.com/FrJNPK5.png)
+![Songs](https://i.imgur.com/durTSd9.png)
