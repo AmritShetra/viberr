@@ -17,7 +17,13 @@ A music web application made using Django, with a PostgreSQL database, that allo
 * Clone the repo to your device and build the docker image for the first time:  
 ```
 sudo docker-compose up --build
-```  
+```
+
+* This command is used so that the website can access static files (e.g. CSS):
+```
+sudo docker exec viberr_viberr_1 bash -c "python3 manage.py collectstatic"
+```
+
 * After this, you only need to run the following command each time you run the server:  
 ```
 sudo docker-compose up

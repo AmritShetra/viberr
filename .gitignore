@@ -2,3 +2,8 @@
 
 /src/media/*
 !/src/media/.gitkeep
+
+/src/static
+
+**/__pycache__/
+**.pyc
