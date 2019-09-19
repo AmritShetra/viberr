@@ -20,7 +20,7 @@ sudo docker-compose up --build
 
 * This command is used so that the website can access static files (e.g. CSS):
 ```
-sudo docker exec viberr_viberr_1 bash -c "python3 manage.py collectstatic"
+sudo docker exec viberr_django_1 bash -c "python3 manage.py collectstatic"
 ```
 
 * After this, you only need to run the following command each time you run the server:  
@@ -40,15 +40,15 @@ CREATE DATABASE viberr_db;
 ```
 * To access the shell, you have to enter the container and access the terminal:  
 ```
-sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py shell"
+sudo docker exec -it viberr_django_1 bash -c "python3 manage.py shell"
 ```
 * A very similar command can be used to run tests:  
 ```
-sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py test"
+sudo docker exec -it viberr_django_1 bash -c "python3 manage.py test"
 ```
 * When you create a new database, you might need to add a new admin user:
 ```
-sudo docker exec -it viberr_viberr_1 bash -c "python3 manage.py createsuperuser"
+sudo docker exec -it viberr_django_1 bash -c "python3 manage.py createsuperuser"
 ```
 
 ### Screenshots
