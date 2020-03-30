@@ -51,7 +51,17 @@ sudo docker exec -it viberr_django_1 bash -c "python3 manage.py test"
 sudo docker exec -it viberr_django_1 bash -c "python3 manage.py createsuperuser"
 ```
 
+### Troubleshooting
+* When starting the Nginx container, there might be an error ending with "address already in use":
+```
+systemctl stop nginx
+```
+
 ### Screenshots
 * Here are two examples of pages accessible on viberr:
 ![Home Page](https://i.imgur.com/FrJNPK5.png)
 ![Songs](https://i.imgur.com/durTSd9.png)
+
+### Acknowledgements
+* 'Pacifico' font from [Google Fonts](https://fonts.google.com/specimen/Pacifico).
+* Website favicon from [Font Awesome](https://fontawesome.com/icons/headphones-alt?style=solid).

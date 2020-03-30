@@ -20,7 +20,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
     """Album index view."""
     template_name = 'music/index.html'
     context_object_name = 'all_albums'
-    login_url = 'music:login'
+    # LOGIN_URL in settings.py
 
     def get_queryset(self):
         """
@@ -50,7 +50,6 @@ class DetailView(LoginRequiredMixin, generic.DetailView):
     """Album detail view."""
     template_name = 'music/detail.html'
     model = Album
-    login_url = 'music:login'
 
     def dispatch(self, request, *args, **kwargs):
         """
@@ -81,7 +80,6 @@ class AlbumCreate(LoginRequiredMixin, CreateView):
     """Album create view."""
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
-    login_url = 'music:login'
 
     def form_valid(self, form):
         """
@@ -103,14 +101,12 @@ class AlbumUpdate(LoginRequiredMixin, UpdateView):
     """Edit album view."""
     model = Album
     fields = ['artist', 'title', 'genre', 'logo']
-    login_url = "music:login"
 
 
 class AlbumDelete(LoginRequiredMixin, DeleteView):
     """Delete album view."""
     model = Album
     success_url = reverse_lazy('music:index')
-    login_url = "music:login"
 
 
 def favourite_album(request, album_id):
@@ -154,7 +150,6 @@ class SongCreate(LoginRequiredMixin, CreateView):
     """Create song view."""
     model = Song
     fields = ['title', 'audio_file']
-    login_url = "music:login"
 
     def form_valid(self, form):
         """
@@ -176,13 +171,11 @@ class SongUpdate(LoginRequiredMixin, UpdateView):
     """Song edit view."""
     model = Song
     fields = ['title', 'audio_file']
-    login_url = "music:login"
 
 
 class SongDelete(LoginRequiredMixin, DeleteView):
     """Song delete view."""
     model = Song
-    login_url = "music:login"
 
     def get_success_url(self):
         """
@@ -196,7 +189,6 @@ class SongView(LoginRequiredMixin, generic.ListView):
     """Song list view."""
     template_name = 'music/songs.html'
     context_object_name = 'all_songs'
-    login_url = "music:login"
 
     def get_queryset(self):
         """
@@ -281,7 +273,6 @@ class UserUpdate(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserForm
     template_name = 'music/edit_user_form.html'
-    login_url = "music:login"
 
     def dispatch(self, request, *args, **kwargs):
         """

@@ -132,3 +132,4 @@ MEDIA_URL = '/media/'
 
 
 LOGIN_REDIRECT_URL = 'music:index'
+LOGIN_URL = 'music:login'

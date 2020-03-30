@@ -32,7 +32,7 @@
                         {%  if form.errors %}
                             <br>
                             <center>
-                                <h5>Your username and password didn't match. Please try again.</h5>
+                                <h5>{{ form.non_field_errors }}</h5>
                             </center>
                         {% endif %}
 
