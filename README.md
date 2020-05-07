@@ -37,11 +37,11 @@ docker exec -it viberr_web_1 bash -c "python manage.py shell_plus"
 ```
 * A series of tests covering most of the views can be used to verify the app works:  
 ```
-docker exec -it viberr_django_1 bash -c "python3 manage.py test"
+docker exec -it viberr_web_1 bash -c "python3 manage.py test"
 ```
 * When you create a new database, you might need to add a new admin user:
 ```
-docker exec -it viberr_django_1 bash -c "python3 manage.py createsuperuser"
+docker exec -it viberr_web_1 bash -c "python3 manage.py createsuperuser"
 ```
 
 #### Troubleshooting
