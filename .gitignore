@@ -1,8 +1,15 @@
+# PyCharm
 .idea
 
+# Environment variables
+.env
+
+# Media folder contents
 /src/media/*
+# Keep the folder itself
 !/src/media/.gitkeep
 
+# Static files
 /src/static
 
 **/__pycache__/

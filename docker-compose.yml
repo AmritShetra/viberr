@@ -1,38 +1,33 @@
 version: '3'
 
 services:
-        django:
-                build:
-                        context: ./src
-                        args:
-                                - DEPLOYMENT_ENVIRONMENT
-                command: bash -c "python3 manage.py makemigrations 
-                                  && python3 manage.py migrate 
-                                  && gunicorn --bind 0.0.0.0:8000 viberr.wsgi:application"
-                environment:
-                        - DEPLOYMENT_ENVIRONMENT
-                        - DJANGO_SECRET_KEY
-                volumes:
-                        - ./src:/src
-                working_dir: /src
-                depends_on:
-                        - postgres
-
-        postgres:
-                image: postgres:latest
-                environment:
-                        - POSTGRES_DATABASE
-                        - POSTGRES_USER
-                        - POSTGRES_PASSWORD
-                volumes:
-                        - ~/PostgresData/viberr/postgres_data:/var/lib/postgresql/data
-
-        nginx:
-                image: nginx:latest
-                ports:
-                    - 127.0.0.1:80:80
-                volumes:
-                    - ./nginx.conf:/etc/nginx/nginx.conf
-                depends_on:
-                    - django
+    web:
+        build: ./src
+        command: gunicorn viberr.wsgi:application --bind 0.0.0.0:8000
+        volumes:
+            - ./src/:/src
+        expose:
+            - 8000
+        env_file:
+            - ./.env
+        depends_on:
+            - postgres
+    postgres:
+        image: postgres:12.0
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    nginx:
+        image: nginx:1.17.4
+        ports:
+            - 8000:80
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf
+        depends_on:
+            - web
+volumes:
+    postgres_data:
 
