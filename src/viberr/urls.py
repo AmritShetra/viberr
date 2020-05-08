@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('music/', include('music.urls')),
+    path('', include('music.urls', namespace=''))
 ]
 
 if settings.DEBUG:
