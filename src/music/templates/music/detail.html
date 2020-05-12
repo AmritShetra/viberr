@@ -61,7 +61,8 @@
                                             {{ song.title }}
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-success" onclick="playMusic('{{ song.audio_file.url }}')">
+                                            <button type="button" class="btn btn-success"
+                                                    onclick="playMusic('{{ song.audio_file.url }}', '{{ song.title }}', '{{ song.album.artist }}')">
                                                 <span class="glyphicon glyphicon-play"></span> Play
                                             </button>
                                         </td>
@@ -101,12 +102,4 @@
 
         </div>
     </div>
-
-    <script>
-        function playMusic(song) {
-            const audio = document.getElementById("audio");
-            audio.src = song;
-            audio.play();
-        }
-    </script>
 {% endblock %}

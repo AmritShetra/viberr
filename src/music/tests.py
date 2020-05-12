@@ -65,7 +65,7 @@ class IndexViewTests(TestCase):
         """
         response = self.client.get(reverse('music:index'))
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, "/music/login/?next=/music/")
+        self.assertRedirects(response, "/login/?next=/")
 
     def test_get_context_data_name_without_s(self):
         """

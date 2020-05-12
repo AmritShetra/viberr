@@ -8,6 +8,7 @@ A music web application made using the Django framework with a PostgreSQL databa
 * Displaying other albums from the same artist, which are conveniently hyperlinked.
 * Adding songs to the database via file upload.
 * Searching through albums & songs via database queries.
+* Built-in music player.
 
 ### Prerequisites
 * Docker (version 19.03)
@@ -37,11 +38,11 @@ docker exec -it viberr_web_1 bash -c "python manage.py shell_plus"
 ```
 * A series of tests covering most of the views can be used to verify the app works:  
 ```
-docker exec -it viberr_web_1 bash -c "python3 manage.py test"
+docker exec -it viberr_web_1 bash -c "python manage.py test"
 ```
 * When you create a new database, you might need to add a new admin user:
 ```
-docker exec -it viberr_web_1 bash -c "python3 manage.py createsuperuser"
+docker exec -it viberr_web_1 bash -c "python manage.py createsuperuser"
 ```
 
 ### Troubleshooting
@@ -49,6 +50,7 @@ docker exec -it viberr_web_1 bash -c "python3 manage.py createsuperuser"
 ```
 systemctl stop nginx
 ```
+* To use a port other than 8000, change the `nginx: ports:` section of the `docker-compose.yml` file, e.g. to use port 8001, set it to `8001: 80`.
 
 ### Screenshots
 * Here are two examples of pages accessible on viberr:
