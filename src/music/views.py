@@ -28,7 +28,7 @@ class IndexView(LoginRequiredMixin, generic.ListView):
         """
         return Album.objects.filter(user=self.request.user).order_by('-is_favourite', 'id')
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self):
         """
         Returns one of two possible strings, depending on if the user's name ends in an "s".
         """

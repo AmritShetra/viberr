@@ -41,7 +41,7 @@ urlpatterns = [
     path('<album_id>/add/', views.SongCreate.as_view(), name='song-add'),
 
     # /music/72/2/edit
-    path('<pk>/<song_id>/edit/', views.SongUpdate.as_view(), name='song-update'),
+    path('<album_id>/<pk>/edit/', views.SongUpdate.as_view(), name='song-update'),
 
     # /music/songs/2/delete/
     path('songs/<pk>/delete/', views.SongDelete.as_view(), name='song-delete'),
