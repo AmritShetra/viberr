@@ -1,5 +1,6 @@
 # PyCharm
 .idea
+venv
 
 # Environment variables
 .env

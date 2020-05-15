@@ -50,7 +50,12 @@ class IndexViewTests(TestCase):
         user.save()
 
         for i in range(3):
-            Album.objects.create(title=i, user=user, is_favourite=(i % 2 == 0), logo="test.png")
+            Album.objects.create(
+                title=i,
+                user=user,
+                is_favourite=(i % 2 == 0),
+                logo="test.png"
+            )
 
         self.client.force_login(user)
         response = self.client.get(reverse('music:index'))
@@ -98,6 +103,7 @@ class DetailViewTests(TestCase):
         Album.objects.create(title="1", artist="user", user=user, logo="test.png", pk=1)
         Album.objects.create(title="2", artist="user1", user=user1, logo="test.png", pk=2)
 
+        # Logged in as user, so they own the Album titled "1"... let's search for the other one
         self.client.force_login(user)
         response = self.client.get(reverse('music:detail', kwargs={'pk': 2}))
 
@@ -112,12 +118,20 @@ class DetailViewTests(TestCase):
 
         # i starts at 0, generally easier to start the title numbering 1 instead
         for i in range(4):
-            Album.objects.create(title=i+1, artist="Imagine Dragons", user=user, logo="test.png", pk=i+1)
+            Album.objects.create(
+                title=i+1,
+                artist="Imagine Dragons",
+                user=user,
+                logo="test.png",
+                pk=i+1
+            )
         Album.objects.create(title=5, artist="Imagine Dragons", user=user1, logo="test.png", pk=5)
 
         self.client.force_login(user)
         # Get album 1 - other albums should ignore Album 5 but retrieve Albums 2, 3 and 4
-        response = self.client.get(reverse('music:detail', kwargs={'pk': 1}))
+        response = self.client.get(
+            reverse('music:detail', kwargs={'pk': 1})
+        )
 
         self.assertQuerysetEqual(
             response.context['all_albums'],
@@ -133,10 +147,51 @@ class AlbumCreateTests(TestCase):
         """
         user = User.objects.create(username="user")
         self.client.force_login(user)
-        album = Album.objects.create(title="1", artist="user", logo="test.mp3", pk=1)
+        album = Album.objects.create(
+            title="1",
+            artist="user",
+            logo="test.mp3",
+            pk=1
+        )
 
         file_type = album.logo.url.split('.')[-1]
         file_type = file_type.lower()
 
         image_file_types = ['png', 'jpg', 'jpeg']
         self.assertNotIn(file_type, image_file_types)
+
+
+class MiscTests(TestCase):
+
+    def test_favourite_album(self):
+        """
+        favourite_album() should flip the specified album's is_favourite attribute both times.
+        """
+        user = User.objects.create(username="user")
+        self.client.force_login(user)
+        album = Album.objects.create(
+            title="Walk the Moon",
+            artist="Walk the Moon",
+            logo="test.png",
+            user=user
+        )
+
+        # Response needs HTTP_REFERER to know where to redirect
+        response = self.client.get(
+            reverse('music:album-favourite', kwargs={'album_id': album.id}),
+            HTTP_REFERER='/'
+        )
+
+        album = Album.objects.first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(album.is_favourite, True)
+
+        # Now checking that it gets flipped
+        response = self.client.get(
+            reverse('music:album-favourite', kwargs={'album_id': album.id}),
+            HTTP_REFERER='/'
+        )
+
+        album = Album.objects.first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(album.is_favourite, False)
