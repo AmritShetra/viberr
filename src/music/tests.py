@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import Album
+from .models import Album, Song
 
 
 class TestcaseUserBackend(object):
@@ -161,7 +161,7 @@ class AlbumCreateTests(TestCase):
         self.assertNotIn(file_type, image_file_types)
 
 
-class MiscTests(TestCase):
+class FavouriteTests(TestCase):
 
     def test_favourite_album(self):
         """
@@ -195,3 +195,28 @@ class MiscTests(TestCase):
         album = Album.objects.first()
         self.assertEqual(response.status_code, 302)
         self.assertEqual(album.is_favourite, False)
+
+    def test_favourite_songs(self):
+        """
+        favourite_song() acts in the same manner as the test above.
+        """
+        user = User.objects.create(username="user")
+        self.client.force_login(user)
+        album = Album.objects.create(
+            title="Walk the Moon",
+            artist="Walk the Moon",
+            logo="test.png",
+            user=user,
+        )
+        song = Song.objects.create(
+            album=album,
+            title="Tightrope",
+        )
+
+        response = self.client.get(
+            reverse('music:favourite-song', kwargs={'song_id': song.id}),
+            HTTP_REFERER='/'
+        )
+        song = Song.objects.first()
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(song.is_favourite, True)

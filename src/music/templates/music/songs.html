@@ -50,7 +50,7 @@
                             </a>
                         </td>
                         <td>
-                            <a href="{% url 'music:favourite-song' song.album.id song.id %}" class="btn">
+                            <a href="{% url 'music:favourite-song' song.id %}" class="btn">
                                 {% if song.is_favourite %}
                                     <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/star-24.png" alt="favourite">
                                 {% else %}

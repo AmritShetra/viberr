@@ -22,25 +22,25 @@ urlpatterns = [
     # /music/album/add/
     path('album/add/', views.AlbumCreate.as_view(), name='album-add'),
 
-    # /music/album/2/
+    # /music/album/71/
     path('album/<pk>/', views.AlbumUpdate.as_view(), name='album-update'),
 
-    # /music/album/2/delete/
+    # /music/album/71/delete/
     path('album/<pk>/delete/', views.AlbumDelete.as_view(), name='album-delete'),
 
     # /music/71/favourite/
     path('<album_id>/favourite/', views.favourite_album, name='album-favourite'),
 
-    # /music/71/2/favourite/
-    path('<album_id>/<song_id>/favourite/', views.favourite_song, name='favourite-song'),
+    # /music/songs/2/favourite/
+    path('songs/<song_id>/favourite/', views.favourite_song, name='favourite-song'),
 
     # /music/search/
     path('search/results/', views.search_albums, name='album-search'),
 
-    # /music/72/add/
+    # /music/71/add/
     path('<album_id>/add/', views.SongCreate.as_view(), name='song-add'),
 
-    # /music/72/2/edit
+    # /music/71/2/edit
     path('<album_id>/<pk>/edit/', views.SongUpdate.as_view(), name='song-update'),
 
     # /music/songs/2/delete/

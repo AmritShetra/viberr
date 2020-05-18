@@ -121,14 +121,13 @@ def favourite_album(request, album_id):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
-def favourite_song(request, album_id, song_id):
+def favourite_song(request, song_id):
     """
     Same as above.
     """
     if not request.user.is_authenticated:
         return redirect("music:login")
-    album = Album.objects.get(pk=album_id)
-    song = album.song_set.get(pk=song_id)
+    song = Song.objects.get(pk=song_id)
     song.is_favourite = not song.is_favourite
     song.save()
     return redirect(request.META.get('HTTP_REFERER'))
